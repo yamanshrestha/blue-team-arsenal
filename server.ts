@@ -76,10 +76,10 @@ app.get('/api/submissions', (req: Request, res: Response) => {
   }
 });
 
-// Approve and add a submission to tools
-app.post('/api/approve/:id', (req: Request, res: Response) => {
+// Approve and add a submission to tools (supports path or query id)
+app.post(['/api/approve/:id', '/api/approve'], (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const id = (req.params as any).id || (req.query as any).id;
     const data = readSubmissions();
 
     const submission = data.submissions.find((s: any) => s.id === id);
@@ -101,10 +101,10 @@ app.post('/api/approve/:id', (req: Request, res: Response) => {
   }
 });
 
-// Reject a submission
-app.post('/api/reject/:id', (req: Request, res: Response) => {
+// Reject a submission (supports path or query id)
+app.post(['/api/reject/:id', '/api/reject'], (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const id = (req.params as any).id || (req.query as any).id;
     const data = readSubmissions();
 
     const submission = data.submissions.find((s: any) => s.id === id);

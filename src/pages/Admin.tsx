@@ -47,7 +47,8 @@ const Admin = () => {
   const handleApprove = async (id: string) => {
     try {
       const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-      const response = await fetch(`${apiUrl}/api/approve/${id}`, {
+      // Use query param for Vercel serverless function compatibility
+      const response = await fetch(`${apiUrl}/api/approve?id=${encodeURIComponent(id)}`, {
         method: 'POST',
       });
       const data = await response.json();
@@ -71,7 +72,8 @@ const Admin = () => {
   const handleReject = async (id: string) => {
     try {
       const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-      const response = await fetch(`${apiUrl}/api/reject/${id}`, {
+      // Use query param for Vercel serverless function compatibility
+      const response = await fetch(`${apiUrl}/api/reject?id=${encodeURIComponent(id)}`, {
         method: 'POST',
       });
 
