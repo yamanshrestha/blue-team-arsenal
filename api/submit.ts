@@ -29,7 +29,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // Create a GitHub issue to store the submission
     const GH_TOKEN = process.env.GH_TOKEN;
     const owner = 'yamanshrestha';
-    const repo = 'blue-team-apps';
+    const repo = 'blue-team-arsenal';
 
     if (!GH_TOKEN) {
       return res.status(500).json({

@@ -8,6 +8,12 @@ export const categories: CategoryInfo[] = [
     icon: 'Shield',
   },
   {
+    id: 'soar',
+    name: 'SOAR Tools',
+    description: 'Security Orchestration, Automation, and Response platforms for incident automation and response workflows',
+    icon: 'Workflow',
+},
+  {
     id: 'phishing-analysis',
     name: 'Phishing Analysis',
     description: 'Tools for analyzing and investigating phishing emails, URLs, and campaigns',

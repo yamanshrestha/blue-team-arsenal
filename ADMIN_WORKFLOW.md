@@ -114,9 +114,9 @@ VITE_ADMIN_PASSWORD=admin123
 
 ### Manual GitHub Access
 All submissions are stored as GitHub Issues:
-- Repository: `yamanshrestha/blue-team-apps`
+- Repository: `yamanshrestha/blue-team-arsenal`
 - Label: `submission`
-- View directly: https://github.com/yamanshrestha/blue-team-apps/issues?q=label%3Asubmission
+- View directly: https://github.com/yamanshrestha/blue-team-arsenal/issues?q=label%3Asubmission
 
 ## Security
 

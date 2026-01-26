@@ -98,7 +98,7 @@ Note: Admin authentication is frontend-only (localStorage). For production, cons
 
 ### Manual Management
 You can also manage submissions directly on GitHub:
-- View all: https://github.com/yamanshrestha/blue-team-apps/issues?q=label%3Asubmission
+- View all: https://github.com/yamanshrestha/blue-team-arsenal/issues?q=label%3Asubmission
 - Add labels manually if needed
 - Close/reopen issues
 - Add comments for communication with submitters

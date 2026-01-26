@@ -26,8 +26,8 @@ A curated collection of cybersecurity tools for blue team operations, incident r
 
 ```bash
 # Clone repository
-git clone https://github.com/yamanshrestha/blue-team-apps.git
-cd blue-team-apps
+git clone https://github.com/yamanshrestha/blue-team-arsenal.git
+cd blue-team-arsenal
 
 # Install dependencies
 npm install

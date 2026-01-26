@@ -19,7 +19,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     try {
       // Fetch all issues with 'submission' label
       const resp = await fetch(
-        `https://api.github.com/repos/yamanshrestha/blue-team-apps/issues?labels=submission&state=all&per_page=100`,
+        `https://api.github.com/repos/yamanshrestha/blue-team-arsenal/issues?labels=submission&state=all&per_page=100`,
         {
           headers: {
             'Authorization': `Bearer ${GH_TOKEN}`,

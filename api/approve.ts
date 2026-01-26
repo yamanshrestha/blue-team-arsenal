@@ -46,7 +46,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     try {
       const resp = await fetch(
-        `https://api.github.com/repos/yamanshrestha/blue-team-apps/issues/${issueNumber}/labels`,
+        `https://api.github.com/repos/yamanshrestha/blue-team-arsenal/issues/${issueNumber}/labels`,
         {
           method: 'POST',
           headers: {
