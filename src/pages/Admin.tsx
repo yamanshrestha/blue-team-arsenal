@@ -45,7 +45,7 @@ const Admin = () => {
     }
   }, []);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!password || !adminUser) {
       toast({
@@ -56,42 +56,40 @@ const Admin = () => {
       return;
     }
 
-    // Validate both username and password - show generic error
-    const expectedPassword = (import.meta as any).env?.VITE_ADMIN_PASSWORD;
-    const allowedUsers = (import.meta as any).env?.VITE_ADMIN_USERS || '';
-    
-    if (!expectedPassword) {
+    try {
+      const apiUrl = (import.meta as any).env?.VITE_API_URL || window.location.origin;
+      const response = await fetch(`${apiUrl}/api/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: adminUser, password }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        toast({
+          title: 'Access Denied',
+          description: error.error || 'Either username or password is wrong',
+          variant: 'destructive',
+        });
+        return;
+      }
+
+      const data = await response.json();
+      
+      localStorage.setItem('admin_auth', 'true');
+      localStorage.setItem('admin_secret', data.secret);
+      localStorage.setItem('admin_user', data.username);
+      setAdminSecret(data.secret);
+      setAdminUser(data.username);
+      setIsAuthenticated(true);
+      fetchSubmissions();
+    } catch (error) {
       toast({
-        title: 'Configuration Error',
-        description: 'Admin password not configured',
+        title: 'Error',
+        description: 'Failed to authenticate',
         variant: 'destructive',
       });
-      return;
     }
-
-    let isValid = password === expectedPassword;
-    
-    if (allowedUsers) {
-      const userList = allowedUsers.split(',').map((u: string) => u.trim()).filter(Boolean);
-      isValid = isValid && userList.includes(adminUser);
-    }
-
-    if (!isValid) {
-      toast({
-        title: 'Access Denied',
-        description: 'Either username or password is wrong',
-        variant: 'destructive',
-      });
-      return;
-    }
-
-    localStorage.setItem('admin_auth', 'true');
-    localStorage.setItem('admin_secret', password);
-    localStorage.setItem('admin_user', adminUser);
-    setAdminSecret(password);
-    setAdminUser(adminUser);
-    setIsAuthenticated(true);
-    fetchSubmissions();
   };
 
   const fetchSubmissions = async () => {
