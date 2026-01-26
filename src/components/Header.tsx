@@ -18,7 +18,7 @@ export const Header = () => {
           >
             Browse Tools
           </Link>
-          <Button size="sm" asChild>
+          <Button size="sm" asChild className="hover:bg-blue-600 hover:text-white transition-all duration-300">
             <Link to="/submit">
               <Plus className="h-4 w-4 mr-1.5" />
               Submit Tool
