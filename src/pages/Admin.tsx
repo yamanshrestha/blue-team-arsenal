@@ -56,12 +56,30 @@ const Admin = () => {
       return;
     }
 
-    // Validate password against VITE_ADMIN_PASSWORD if set
-    const expectedPassword = (import.meta as any).env?.VITE_ADMIN_PASSWORD || 'admin123';
-    if (password !== expectedPassword) {
+    // Validate both username and password - show generic error
+    const expectedPassword = (import.meta as any).env?.VITE_ADMIN_PASSWORD;
+    const allowedUsers = (import.meta as any).env?.VITE_ADMIN_USERS || '';
+    
+    if (!expectedPassword) {
+      toast({
+        title: 'Configuration Error',
+        description: 'Admin password not configured',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    let isValid = password === expectedPassword;
+    
+    if (allowedUsers) {
+      const userList = allowedUsers.split(',').map((u: string) => u.trim()).filter(Boolean);
+      isValid = isValid && userList.includes(adminUser);
+    }
+
+    if (!isValid) {
       toast({
         title: 'Access Denied',
-        description: 'Invalid credentials',
+        description: 'Either username or password is wrong',
         variant: 'destructive',
       });
       return;
