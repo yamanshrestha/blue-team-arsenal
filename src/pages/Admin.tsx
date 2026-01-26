@@ -27,10 +27,17 @@ const Admin = () => {
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
+  const [adminSecret, setAdminSecret] = useState('');
+  const [adminUser, setAdminUser] = useState('');
 
   useEffect(() => {
     const savedAuth = localStorage.getItem('admin_auth');
-    if (savedAuth === 'true') {
+    const savedSecret = localStorage.getItem('admin_secret') || '';
+    const savedUser = localStorage.getItem('admin_user') || '';
+
+    if (savedAuth === 'true' && savedSecret) {
+      setAdminSecret(savedSecret);
+      setAdminUser(savedUser);
       setIsAuthenticated(true);
       fetchSubmissions();
     } else {
@@ -40,18 +47,22 @@ const Admin = () => {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    const ADMIN_PASS = (import.meta as any).env?.VITE_ADMIN_PASSWORD || 'admin123';
-    if (password === ADMIN_PASS) {
-      localStorage.setItem('admin_auth', 'true');
-      setIsAuthenticated(true);
-      fetchSubmissions();
-    } else {
+    if (!password || !adminUser) {
       toast({
         title: 'Access Denied',
-        description: 'Incorrect password',
+        description: 'Username and password required',
         variant: 'destructive',
       });
+      return;
     }
+
+    localStorage.setItem('admin_auth', 'true');
+    localStorage.setItem('admin_secret', password);
+    localStorage.setItem('admin_user', adminUser);
+    setAdminSecret(password);
+    setAdminUser(adminUser);
+    setIsAuthenticated(true);
+    fetchSubmissions();
   };
 
   const fetchSubmissions = async () => {
@@ -72,11 +83,16 @@ const Admin = () => {
   };
 
   const handleApprove = async (issueNumber: number) => {
+    if (!adminSecret) {
+      toast({ title: 'Access Denied', description: 'Password required', variant: 'destructive' });
+      return;
+    }
+
     try {
       const apiUrl = (import.meta as any).env?.VITE_API_URL || window.location.origin;
       const response = await fetch(`${apiUrl}/api/approve`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'x-admin-secret': adminSecret, 'x-admin-user': adminUser },
         body: JSON.stringify({ issueNumber }),
       });
 
@@ -97,11 +113,16 @@ const Admin = () => {
   };
 
   const handleReject = async (issueNumber: number) => {
+    if (!adminSecret) {
+      toast({ title: 'Access Denied', description: 'Password required', variant: 'destructive' });
+      return;
+    }
+
     try {
       const apiUrl = (import.meta as any).env?.VITE_API_URL || window.location.origin;
       const response = await fetch(`${apiUrl}/api/reject`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'x-admin-secret': adminSecret, 'x-admin-user': adminUser },
         body: JSON.stringify({ issueNumber }),
       });
 
@@ -169,13 +190,27 @@ const Admin = () => {
             </CardHeader>
             <CardContent>
               <form onSubmit={handleLogin} className="space-y-4">
-                <Input
-                  type="password"
-                  placeholder="Admin password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
+                <div className="space-y-2">
+                  <p className="text-sm font-medium">Admin username</p>
+                  <Input
+                    type="text"
+                    placeholder="e.g. yshrestha"
+                    value={adminUser}
+                    onChange={(e) => setAdminUser(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <p className="text-sm font-medium">Admin password / secret</p>
+                  <Input
+                    type="password"
+                    placeholder="Your admin secret"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                  <p className="text-xs text-muted-foreground">Both username and password are required.</p>
+                </div>
                 <Button type="submit" className="w-full">
                   Login
                 </Button>
@@ -207,10 +242,50 @@ const Admin = () => {
               Review and approve tool submissions
             </p>
           </div>
-          <Button variant="outline" onClick={() => window.open('/api/backup', '_blank')} className="mr-2">
+          <Button
+            variant="outline"
+            onClick={async () => {
+              if (!adminSecret) {
+                toast({ title: 'Access Denied', description: 'Password required', variant: 'destructive' });
+                return;
+              }
+
+              try {
+                const apiUrl = (import.meta as any).env?.VITE_API_URL || window.location.origin;
+                const res = await fetch(`${apiUrl}/api/backup`, {
+                  headers: { 'x-admin-secret': adminSecret, 'x-admin-user': adminUser },
+                });
+
+                if (!res.ok) {
+                  const err = await res.json().catch(() => ({}));
+                  throw new Error(err.error || 'Failed to download backup');
+                }
+
+                const data = await res.json();
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = data?.backupDate ? `submissions-backup-${data.backupDate.split('T')[0]}.json` : 'submissions-backup.json';
+                a.click();
+                URL.revokeObjectURL(url);
+              } catch (err: any) {
+                toast({ title: 'Error', description: err.message || 'Failed to download backup', variant: 'destructive' });
+              }
+            }}
+            className="mr-2"
+          >
             Download Backup
           </Button>
-          <Button variant="outline" onClick={() => { localStorage.removeItem('admin_auth'); window.location.reload(); }}>
+          <Button
+            variant="outline"
+            onClick={() => {
+              localStorage.removeItem('admin_auth');
+              localStorage.removeItem('admin_secret');
+              localStorage.removeItem('admin_user');
+              window.location.reload();
+            }}
+          >
             Logout
           </Button>
         </div>
