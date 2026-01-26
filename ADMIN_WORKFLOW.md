@@ -12,7 +12,7 @@
    - Description
    - Key Features (optional)
 3. Click "Submit Tool"
-4. The submission is sent to the backend and stored in `submissions.json`
+4. The submission is sent to the backend and stored as a GitHub Issue (serverless-friendly)
 
 ### For Admins (Approving Tools)
 
@@ -87,7 +87,7 @@ Example entry:
 
 ## API Endpoints
 
-- **POST** `/api/submit` - Submit a new tool
+- **POST** `/api/submit` - Submit a new tool (creates a GitHub Issue in this repo)
 - **GET** `/api/submissions` - Get all submissions
 - **POST** `/api/approve/:id` - Approve a submission
 - **POST** `/api/reject/:id` - Reject a submission
@@ -101,6 +101,13 @@ Example entry:
 - `api/reject.ts` - Reject submissions
 - `src/pages/Admin.tsx` - Admin dashboard page
 - `src/pages/Submit.tsx` - Updated form with API integration
+
+## Environment Variables
+
+In Vercel project settings → Environment Variables:
+
+- `VITE_API_URL` = `https://your-custom-domain.com` (optional; defaults to same-origin)
+- `GH_TOKEN` = GitHub Personal Access Token with `repo` scope (used to create issues)
 
 ## Development
 
