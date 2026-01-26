@@ -49,6 +49,12 @@ export const categories: CategoryInfo[] = [
     description: 'Digital forensics tools for evidence collection and incident investigation',
     icon: 'Search',
   },
+  {
+    id: 'trainings',
+    name: 'Trainings',
+    description: 'Educational resources and training platforms for cybersecurity skills development',
+    icon: 'Training',
+  },
 ];
 
 export const getCategoryById = (id: string): CategoryInfo | undefined => {

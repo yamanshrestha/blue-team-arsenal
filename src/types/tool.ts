@@ -18,7 +18,8 @@ export type Category =
   | 'threat-intelligence'
   | 'network-analysis'
   | 'edr'
-  | 'forensics';
+  | 'forensics'
+  | 'trainings';
 
 export interface CategoryInfo {
   id: Category;
