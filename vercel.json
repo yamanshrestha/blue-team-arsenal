@@ -4,7 +4,7 @@
   "devCommand": "npm run dev",
   "env": {
     "VITE_API_URL": {
-      "description": "Backend API URL for API calls",
+      "description": "Backend API URL for API calls. Set to your custom domain in Vercel dashboard.",
       "default": "http://localhost:5000"
     }
   },
