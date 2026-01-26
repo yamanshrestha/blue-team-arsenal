@@ -27,7 +27,7 @@ const Home = () => {
               Cybersecurity Tools Repository
             </div>
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
-              Blue Team Arsenal
+              <span className="text-blue-600">Blue</span> Team Arsenal
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
               A curated collection of tools for security analysts, incident responders, 
