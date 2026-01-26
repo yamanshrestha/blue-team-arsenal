@@ -3,11 +3,13 @@ import { Layout } from '@/components/Layout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { CheckCircle, XCircle, Copy } from 'lucide-react';
+import { CheckCircle, XCircle, Copy, Lock } from 'lucide-react';
 
 interface Submission {
   id: string;
+  issueNumber: number;
   name: string;
   website: string;
   category: string;
@@ -16,16 +18,41 @@ interface Submission {
   features: string;
   status: 'pending' | 'approved' | 'rejected';
   submittedAt: string;
+  issueUrl: string;
 }
 
 const Admin = () => {
   const { toast } = useToast();
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [password, setPassword] = useState('');
 
   useEffect(() => {
-    fetchSubmissions();
+    const savedAuth = localStorage.getItem('admin_auth');
+    if (savedAuth === 'true') {
+      setIsAuthenticated(true);
+      fetchSubmissions();
+    } else {
+      setLoading(false);
+    }
   }, []);
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    const ADMIN_PASS = (import.meta as any).env?.VITE_ADMIN_PASSWORD || 'admin123';
+    if (password === ADMIN_PASS) {
+      localStorage.setItem('admin_auth', 'true');
+      setIsAuthenticated(true);
+      fetchSubmissions();
+    } else {
+      toast({
+        title: 'Access Denied',
+        description: 'Incorrect password',
+        variant: 'destructive',
+      });
+    }
+  };
 
   const fetchSubmissions = async () => {
     try {
@@ -36,7 +63,7 @@ const Admin = () => {
     } catch (error) {
       toast({
         title: 'Error',
-        description: 'Failed to fetch submissions. Is the backend running?',
+        description: 'Failed to fetch submissions',
         variant: 'destructive',
       });
     } finally {
@@ -44,50 +71,51 @@ const Admin = () => {
     }
   };
 
-  const handleApprove = async (id: string) => {
+  const handleApprove = async (issueNumber: number) => {
     try {
       const apiUrl = (import.meta as any).env?.VITE_API_URL || window.location.origin;
-      // Use query param for Vercel serverless function compatibility
-      const response = await fetch(`${apiUrl}/api/approve?id=${encodeURIComponent(id)}`, {
+      const response = await fetch(`${apiUrl}/api/approve`, {
         method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ issueNumber }),
       });
-      const data = await response.json();
 
       if (response.ok) {
         toast({
           title: 'Approved!',
-          description: 'Now copy the tool data below and add it to src/data/tools.ts',
+          description: 'Submission approved. Copy the tool entry below.',
         });
         fetchSubmissions();
       }
     } catch (error) {
       toast({
         title: 'Error',
-        description: 'Failed to approve submission',
+        description: 'Failed to approve',
         variant: 'destructive',
       });
     }
   };
 
-  const handleReject = async (id: string) => {
+  const handleReject = async (issueNumber: number) => {
     try {
       const apiUrl = (import.meta as any).env?.VITE_API_URL || window.location.origin;
-      // Use query param for Vercel serverless function compatibility
-      const response = await fetch(`${apiUrl}/api/reject?id=${encodeURIComponent(id)}`, {
+      const response = await fetch(`${apiUrl}/api/reject`, {
         method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ issueNumber }),
       });
 
       if (response.ok) {
         toast({
           title: 'Rejected',
-          description: 'Submission marked as rejected',
+          description: 'Submission rejected and closed',
         });
         fetchSubmissions();
       }
     } catch (error) {
       toast({
         title: 'Error',
-        description: 'Failed to reject submission',
+        description: 'Failed to reject',
         variant: 'destructive',
       });
     }
@@ -95,17 +123,17 @@ const Admin = () => {
 
   const copyToClipboard = (submission: Submission) => {
     const toolEntry = `{
-    id: '${submission.name.toLowerCase().replace(/\s+/g, '-')}',
-    name: '${submission.name}',
-    description: '${submission.description}',
-    category: '${submission.category}',
-    pricing: '${submission.pricing}',
-    website: '${submission.website}',
-    features: [${submission.features
-      .split(',')
-      .map(f => `'${f.trim()}'`)
-      .join(', ')}],
-  },`;
+  id: '${submission.name.toLowerCase().replace(/\s+/g, '-')}',
+  name: '${submission.name}',
+  description: '${submission.description}',
+  category: '${submission.category}',
+  pricing: '${submission.pricing}',
+  website: '${submission.website}',
+  features: [${submission.features
+    .split(',')
+    .map(f => `'${f.trim()}'`)
+    .join(', ')}],
+},`;
 
     navigator.clipboard.writeText(toolEntry);
     toast({
@@ -125,6 +153,40 @@ const Admin = () => {
     }
   };
 
+  if (!isAuthenticated) {
+    return (
+      <Layout>
+        <div className="container py-8 max-w-md mx-auto">
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-center mb-4">
+                <Lock className="h-12 w-12 text-primary" />
+              </div>
+              <CardTitle className="text-center">Admin Access</CardTitle>
+              <CardDescription className="text-center">
+                Enter password to access the admin dashboard
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleLogin} className="space-y-4">
+                <Input
+                  type="password"
+                  placeholder="Admin password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+                <Button type="submit" className="w-full">
+                  Login
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+        </div>
+      </Layout>
+    );
+  }
+
   if (loading) {
     return (
       <Layout>
@@ -138,11 +200,19 @@ const Admin = () => {
   return (
     <Layout>
       <div className="container py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold">Admin Dashboard</h1>
-          <p className="text-muted-foreground mt-2">
-            Review and approve tool submissions
-          </p>
+        <div className="mb-8 flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+            <p className="text-muted-foreground mt-2">
+              Review and approve tool submissions
+            </p>
+          </div>
+          <Button variant="outline" onClick={() => window.open('/api/backup', '_blank')} className="mr-2">
+            Download Backup
+          </Button>
+          <Button variant="outline" onClick={() => { localStorage.removeItem('admin_auth'); window.location.reload(); }}>
+            Logout
+          </Button>
         </div>
 
         {submissions.length === 0 ? (
@@ -154,7 +224,7 @@ const Admin = () => {
         ) : (
           <div className="space-y-4">
             {submissions.map((submission) => (
-              <Card key={submission.id}>
+              <Card key={submission.issueNumber}>
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
@@ -165,7 +235,7 @@ const Admin = () => {
                         </Badge>
                       </CardTitle>
                       <CardDescription>
-                        Submitted: {new Date(submission.submittedAt).toLocaleDateString()}
+                        Issue #{submission.issueNumber} • {new Date(submission.submittedAt).toLocaleDateString()}
                       </CardDescription>
                     </div>
                   </div>
@@ -178,7 +248,7 @@ const Admin = () => {
                         href={submission.website}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-primary hover:underline break-all"
+                        className="text-primary hover:underline break-all text-sm"
                       >
                         {submission.website}
                       </a>
@@ -192,8 +262,10 @@ const Admin = () => {
                       <p className="text-sm capitalize">{submission.pricing}</p>
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-muted-foreground">ID</p>
-                      <p className="text-sm font-mono text-xs">{submission.id}</p>
+                      <p className="text-sm font-medium text-muted-foreground">GitHub Issue</p>
+                      <a href={submission.issueUrl} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline text-sm">
+                        View Issue
+                      </a>
                     </div>
                   </div>
 
@@ -213,7 +285,7 @@ const Admin = () => {
                     <div className="flex flex-wrap gap-2 pt-4 border-t">
                       <Button
                         size="sm"
-                        onClick={() => handleApprove(submission.id)}
+                        onClick={() => handleApprove(submission.issueNumber)}
                         className="bg-green-600 hover:bg-green-700"
                       >
                         <CheckCircle className="h-4 w-4 mr-1.5" />
@@ -222,7 +294,7 @@ const Admin = () => {
                       <Button
                         size="sm"
                         variant="destructive"
-                        onClick={() => handleReject(submission.id)}
+                        onClick={() => handleReject(submission.issueNumber)}
                       >
                         <XCircle className="h-4 w-4 mr-1.5" />
                         Reject

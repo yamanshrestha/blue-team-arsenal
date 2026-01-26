@@ -1,59 +1,46 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
-import fs from 'fs';
-import path from 'path';
 
-const submissionsPath = path.join(process.cwd(), 'submissions.json');
-
-const readSubmissions = () => {
-  try {
-    const data = fs.readFileSync(submissionsPath, 'utf-8');
-    return JSON.parse(data);
-  } catch {
-    return { submissions: [] };
-  }
-};
-
-const writeSubmissions = (data: any) => {
-  fs.writeFileSync(submissionsPath, JSON.stringify(data, null, 2));
-};
-
-export default function handler(req: VercelRequest, res: VercelResponse) {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
-  );
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,POST');
+  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Content-Type, Authorization');
 
   if (req.method === 'OPTIONS') {
-    res.status(200).end();
-    return;
+    return res.status(200).end();
   }
 
-  const { id } = req.query;
-
   if (req.method === 'POST') {
-    if (!id) {
-      return res.status(400).json({ error: 'Missing submission ID' });
+    const { issueNumber } = req.body || {};
+    
+    if (!issueNumber) {
+      return res.status(400).json({ error: 'Missing issue number' });
+    }
+
+    const GH_TOKEN = process.env.GH_TOKEN;
+    if (!GH_TOKEN) {
+      return res.status(500).json({ error: 'Server not configured' });
     }
 
     try {
-      const data = readSubmissions();
-      const submission = data.submissions.find((s: any) => s.id === id);
+      const resp = await fetch(
+        `https://api.github.com/repos/yamanshrestha/blue-team-apps/issues/${issueNumber}/labels`,
+        {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${GH_TOKEN}`,
+            'Accept': 'application/vnd.github+json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ labels: ['approved'] }),
+        }
+      );
 
-      if (!submission) {
-        return res.status(404).json({ error: 'Submission not found' });
+      if (!resp.ok) {
+        return res.status(500).json({ error: 'Failed to approve' });
       }
 
-      submission.status = 'approved';
-      writeSubmissions(data);
-
-      return res.status(200).json({
-        success: true,
-        message: 'Submission approved! Add it to tools.ts to display it.',
-        submission,
-      });
+      return res.status(200).json({ success: true, message: 'Approved!' });
     } catch (error) {
       console.error(error);
       return res.status(500).json({ error: 'Failed to approve submission' });

@@ -1,0 +1,64 @@
+import { VercelRequest, VercelResponse } from '@vercel/node';
+import fs from 'fs';
+import path from 'path';
+
+const submissionsPath = path.join(process.cwd(), 'submissions.json');
+
+const readSubmissions = () => {
+  try {
+    const data = fs.readFileSync(submissionsPath, 'utf-8');
+    return JSON.parse(data);
+  } catch {
+    return { submissions: [] };
+  }
+};
+
+const writeSubmissions = (data: any) => {
+  fs.writeFileSync(submissionsPath, JSON.stringify(data, null, 2));
+};
+
+export default function handler(req: VercelRequest, res: VercelResponse) {
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+  );
+
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
+    return;
+  }
+
+  const { id } = req.query;
+
+  if (req.method === 'POST') {
+    if (!id) {
+      return res.status(400).json({ error: 'Missing submission ID' });
+    }
+
+    try {
+      const data = readSubmissions();
+      const submission = data.submissions.find((s: any) => s.id === id);
+
+      if (!submission) {
+        return res.status(404).json({ error: 'Submission not found' });
+      }
+
+      submission.status = 'approved';
+      writeSubmissions(data);
+
+      return res.status(200).json({
+        success: true,
+        message: 'Submission approved! Add it to tools.ts to display it.',
+        submission,
+      });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ error: 'Failed to approve submission' });
+    }
+  }
+
+  return res.status(405).json({ error: 'Method not allowed' });
+}

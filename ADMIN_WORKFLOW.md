@@ -1,141 +1,195 @@
-# Tool Submission & Admin Workflow
+# Admin Workflow Documentation
 
-## How It Works
+## Overview
+The admin system manages tool submissions through GitHub Issues, providing an authentication-protected dashboard for reviewing, approving, or rejecting submissions.
 
-### For Users (Submitting Tools)
-1. Go to `/submit` page
-2. Fill in the tool details:
-   - Tool Name
-   - Website URL
-   - Category
-   - Pricing (Free/Freemium/Paid)
-   - Description
-   - Key Features (optional)
-3. Click "Submit Tool"
-4. The submission is sent to the backend and stored as a GitHub Issue (serverless-friendly)
+## Authentication
+- **Access**: Navigate to `/admin` route
+- **Default Password**: `admin123`
+- **Change Password**: Set `VITE_ADMIN_PASSWORD` environment variable in Vercel
+- **Session**: Stored in browser localStorage (persists across page refreshes)
 
-### For Admins (Approving Tools)
+## Submission Flow
 
-#### Local Development
+### 1. User Submits Tool
+- User fills out form at `/submit`
+- Form posts to `/api/submit`
+- Creates GitHub Issue with `submission` label
+- Issue body contains all submission details
 
-##### Step 1: Start Both Frontend & Backend
-```bash
-npm run dev
-# This starts both Vite (frontend) and the Express backend
-```
-
-The frontend runs on `http://localhost:5173` (or 3000)
-The backend runs on `http://localhost:5000`
-
-##### Step 2: Access Admin Dashboard
-Go to `http://localhost:5173/admin` (or whatever port Vite uses)
-
-#### Production on Vercel
-
-The backend runs as serverless functions in the `api/` folder. No separate backend needed!
-
-##### Step 1: Deploy to Vercel
-```bash
-# Push to GitHub
-git push
-
-# Vercel automatically deploys on push
-# Frontend: https://your-app.vercel.app
-# API endpoints: https://your-app.vercel.app/api/...
-```
-
-##### Step 2: Set Environment Variable
-In Vercel dashboard:
-1. Go to project Settings → Environment Variables
-2. Add: `VITE_API_URL` = `https://your-app.vercel.app`
-3. Redeploy
-
-##### Step 3: Access Admin Dashboard
-Go to `https://your-app.vercel.app/admin`
-
-#### Review Submissions
-- View all pending, approved, and rejected submissions
+### 2. Admin Reviews Submission
+- Login to `/admin` with password
+- View all submissions (fetched from GitHub Issues API)
 - Each submission shows:
-  - Tool name and status badge
-  - Website URL
-  - Category, pricing, description, features
-  - Submission date
+  - Tool name and description
+  - Website, category, pricing, features
+  - Submission date and GitHub issue link
+  - Status badge (pending/approved/rejected)
 
-#### Approve or Reject
-- **Approve**: Click the "Approve" button to mark it for addition
-- **Reject**: Click the "Reject" button if it doesn't fit the repository
+### 3. Approve Submission
+- Click "Approve" button on pending submission
+- Adds `approved` label to GitHub Issue
+- Status changes to "Approved"
+- "Copy Tool Entry" button appears
+- Copy formatted code to add to `src/data/tools.ts`
 
-#### Step 5: Add to Tools List
-Once approved:
-1. Click the "Copy Tool Entry" button to copy the formatted JSON
-2. Open `src/data/tools.ts`
-3. Paste the entry in the appropriate category section
-4. Save and commit
-
-Example entry:
-```typescript
-{
-  id: 'my-tool',
-  name: 'My Tool',
-  description: 'Tool description',
-  category: 'siem',
-  pricing: 'free',
-  website: 'https://mytool.com',
-  features: ['Feature 1', 'Feature 2'],
-}
-```
+### 4. Reject Submission
+- Click "Reject" button on pending submission
+- Adds `rejected` label to GitHub Issue
+- Closes the GitHub Issue
+- Status changes to "Rejected"
 
 ## API Endpoints
 
-- **POST** `/api/submit` - Submit a new tool (creates a GitHub Issue in this repo)
-- **GET** `/api/submissions` - Get all submissions
-- **POST** `/api/approve/:id` - Approve a submission
-- **POST** `/api/reject/:id` - Reject a submission
+### POST /api/submit
+Creates new submission as GitHub Issue
+- **Body**: `{name, website, category, pricing, description, features}`
+- **Returns**: `{success, message, issueUrl, issueNumber}`
+- **Storage**: GitHub Issues with `submission` label
 
-## File Structure
+### GET /api/submissions
+Fetches all submissions from GitHub Issues
+- **Query**: Issues with `submission` label (all states)
+- **Returns**: Array of submission objects with `issueNumber`
+- **Parses**: Issue body to extract submission fields
 
-- `submissions.json` - Stores all submissions
-- `api/submit.ts` - Handle new submissions
-- `api/submissions.ts` - Fetch all submissions
-- `api/approve.ts` - Approve submissions
-- `api/reject.ts` - Reject submissions
-- `src/pages/Admin.tsx` - Admin dashboard page
-- `src/pages/Submit.tsx` - Updated form with API integration
+### POST /api/approve
+Approves a submission by adding label
+- **Body**: `{issueNumber}`
+- **Action**: POST to GitHub API to add `approved` label
+- **Returns**: `{success, message}`
+
+### POST /api/reject
+Rejects and closes a submission
+- **Body**: `{issueNumber}`
+- **Actions**: 
+  1. Add `rejected` label
+  2. Close GitHub Issue (state: closed)
+- **Returns**: `{success, message}`
+
+### GET /api/backup
+Downloads all submissions as JSON backup
+- **Method**: GET
+- **Returns**: JSON file with all submissions
+- **Filename**: `submissions-backup-YYYY-MM-DD.json`
+- **Access**: Click "Download Backup" button in admin dashboard
 
 ## Environment Variables
 
-In Vercel project settings → Environment Variables:
+### Required in Vercel
+```env
+# GitHub Personal Access Token
+# Create at: https://github.com/settings/tokens
+# Scopes required: repo (full control)
+GH_TOKEN=ghp_xxxxxxxxxxxx
 
-- `VITE_API_URL` = `https://your-custom-domain.com` (optional; defaults to same-origin)
-- `GH_TOKEN` = GitHub Personal Access Token with `repo` scope (used to create issues)
-
-## Development
-
-```bash
-# Start both frontend and backend
-npm run dev
-
-# Or run separately
-npm run dev:frontend  # Just Vite
-npm run dev:backend   # Just backend (using server.ts)
+# Optional: Custom admin password
+VITE_ADMIN_PASSWORD=your-secure-password-here
 ```
 
-## Local vs Production
+### Local Development (.env)
+```env
+VITE_API_URL=http://localhost:5000
+VITE_ADMIN_PASSWORD=admin123
+```
 
-### Local Development
-- Frontend: http://localhost:5173
-- Backend: http://localhost:5000 (Express server via `server.ts`)
-- Uses `VITE_API_URL` from `.env.local`
+## Backup System
 
-### Production (Vercel)
-- Frontend & Backend: https://your-app.vercel.app
-- Backend: Serverless functions in `api/` folder
-- Uses `VITE_API_URL` from Vercel environment variables
+### Automated Backup
+- Click "Download Backup" in admin dashboard
+- Fetches all submissions from GitHub Issues
+- Generates timestamped JSON file
+- Contains:
+  - Backup date and total count
+  - All submission details
+  - Issue numbers and URLs
+  - Current status and state
 
-## Notes
+### Manual GitHub Access
+All submissions are stored as GitHub Issues:
+- Repository: `yamanshrestha/blue-team-apps`
+- Label: `submission`
+- View directly: https://github.com/yamanshrestha/blue-team-apps/issues?q=label%3Asubmission
 
-- `server.ts` is used for local development only
-- `api/` folder contains serverless functions for Vercel production
-- `submissions.json` is committed to repo (file storage works on Vercel)
-- For production authentication, add middleware to `api/` functions
+## Security
 
+### Password Protection
+- Admin dashboard requires password login
+- Password stored in environment variable
+- Session persists in localStorage
+- Logout clears session and reloads page
+
+### GitHub Token
+- Required for all API operations
+- Stored securely in Vercel environment
+- Never exposed to client-side code
+- Required scopes: repo access
+
+## Troubleshooting
+
+### "GitHub token not configured"
+- Set `GH_TOKEN` in Vercel environment variables
+- Redeploy after adding environment variable
+
+### "Failed to fetch submissions"
+- Check GitHub token has `repo` scope
+- Verify repository name is correct
+- Check GitHub API rate limits
+
+### Approve/Reject buttons not working
+- Ensure using `issueNumber` not `id` in API calls
+- Check browser console for error messages
+- Verify GitHub token has write permissions
+
+### Can't login to admin
+- Default password is `admin123`
+- Set custom password with `VITE_ADMIN_PASSWORD`
+- Clear browser localStorage if session corrupted
+
+## Adding Approved Tools
+
+After approving a submission:
+1. Click "Copy Tool Entry" button
+2. Open `src/data/tools.ts`
+3. Paste the copied entry into the appropriate category array
+4. Commit and deploy changes
+
+The copied format:
+```typescript
+{
+  id: 'tool-name',
+  name: 'Tool Name',
+  description: 'Tool description',
+  category: 'Category Name',
+  pricing: 'free/freemium/paid',
+  website: 'https://example.com',
+  features: ['Feature 1', 'Feature 2', 'Feature 3'],
+},
+```
+
+## Architecture
+
+### Storage: GitHub Issues
+- **Pros**: 
+  - No filesystem required (Vercel-compatible)
+  - Built-in versioning and history
+  - Issue comments for communication
+  - Free for public repos
+  - Accessible via web interface
+  
+- **Cons**:
+  - API rate limits (5000/hour authenticated)
+  - Requires GitHub token management
+  - Network dependency
+
+### Authentication: Environment Variable
+- Simple password-based auth
+- Frontend localStorage session
+- No database required
+- Easy to rotate password
+
+### API: Vercel Serverless Functions
+- No persistent server required
+- Auto-scaling
+- CORS configured for cross-origin
+- TypeScript with proper types
