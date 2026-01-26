@@ -454,6 +454,186 @@ export const tools: Tool[] = [
     'Community support and student discounts',
   ],
 },
+  // Network Analysis (additional)
+  {
+    id: 'tcpdump',
+    name: 'tcpdump',
+    description: 'Command-line packet capture and network traffic analysis tool',
+    category: 'network-analysis',
+    pricing: 'free',
+    website: 'https://www.tcpdump.org',
+    features: [
+      'Live packet capture',
+      'PCAP file analysis',
+      'BPF filtering',
+      'Low-level network inspection',
+    ],
+  },
+  {
+    id: 'tcpflow',
+    name: 'tcpflow',
+    description: 'Tool for reconstructing TCP flows and extracting data from network traffic',
+    category: 'network-analysis',
+    pricing: 'free',
+    website: 'https://github.com/simsong/tcpflow',
+    features: [
+      'TCP session reconstruction',
+      'File and content extraction',
+      'Network forensics',
+      'PCAP processing',
+    ],
+  },
+  {
+    id: 'tcpstat',
+    name: 'tcpstat',
+    description: 'Network traffic statistics generator from packet capture files',
+    category: 'network-analysis',
+    pricing: 'free',
+    website: 'https://github.com/mingrammer/tcpstat',
+    features: [
+      'Traffic statistics',
+      'Packet rate analysis',
+      'Bandwidth monitoring',
+      'PCAP input support',
+    ],
+  },
+  {
+    id: 'editcap',
+    name: 'editcap',
+    description: 'Packet capture file manipulation tool from the Wireshark suite',
+    category: 'network-analysis',
+    pricing: 'free',
+    website: 'https://www.wireshark.org/docs/man-pages/editcap.html',
+    features: [
+      'PCAP slicing',
+      'Duplicate packet removal',
+      'File format conversion',
+      'Timestamp filtering',
+    ],
+  },
+
+  // SIEM & Log Analysis (additional)
+  {
+    id: 'sof-elk',
+    name: 'SOF-ELK',
+    description: 'Forensics-focused Elastic Stack distribution for incident response',
+    category: 'siem',
+    pricing: 'free',
+    website: 'https://github.com/philhagen/sof-elk',
+    features: [
+      'Preconfigured ELK stack',
+      'DFIR-focused dashboards',
+      'Log parsing at scale',
+      'Minimal setup overhead',
+    ],
+  },
+
+  // Threat Intelligence / Detection
+  {
+    id: 'snort',
+    name: 'Snort',
+    description: 'Open-source intrusion detection and prevention system',
+    category: 'network-analysis',
+    pricing: 'free',
+    website: 'https://www.snort.org',
+    features: [
+      'IDS and IPS modes',
+      'Signature-based detection',
+      'Real-time alerting',
+      'Network traffic inspection',
+    ],
+  },
+
+  // NetFlow & Traffic Metadata
+  {
+    id: 'softflowd',
+    name: 'softflowd',
+    description: 'Software-based NetFlow exporter for traffic monitoring',
+    category: 'network-analysis',
+    pricing: 'free',
+    website: 'https://github.com/irino/softflowd',
+    features: [
+      'NetFlow export',
+      'Traffic metadata generation',
+      'Lightweight deployment',
+      'Collector integration',
+    ],
+  },
+  {
+    id: 'nfcapd',
+    name: 'nfcapd',
+    description: 'NetFlow collector and processing daemon from the nfdump toolkit',
+    category: 'network-analysis',
+    pricing: 'free',
+    website: 'https://github.com/phaag/nfdump',
+    features: [
+      'NetFlow collection',
+      'Traffic aggregation',
+      'Flow analysis',
+      'Long-term storage support',
+    ],
+  },
+
+  // Proxy & Web Traffic Analysis
+  {
+    id: 'squid',
+    name: 'Squid',
+    description: 'Open-source web proxy server for caching, logging, and traffic control',
+    category: 'network-analysis',
+    pricing: 'free',
+    website: 'http://www.squid-cache.org',
+    features: [
+      'Web traffic logging',
+      'Caching proxy',
+      'Access control lists',
+      'Forensic log analysis',
+    ],
+  },
+  {
+    id: 'apache-traffic-server',
+    name: 'Apache Traffic Server',
+    description: 'High-performance HTTP proxy and caching server',
+    category: 'network-analysis',
+    pricing: 'free',
+    website: 'https://trafficserver.apache.org',
+    features: [
+      'HTTP proxy',
+      'Traffic caching',
+      'Load handling',
+      'Web traffic visibility',
+    ],
+  },
+  {
+    id: 'privoxy',
+    name: 'Privoxy',
+    description: 'Privacy-enhancing web proxy with filtering capabilities',
+    category: 'network-analysis',
+    pricing: 'free',
+    website: 'https://www.privoxy.org',
+    features: [
+      'Privacy filtering',
+      'Traffic control',
+      'Content filtering',
+      'Web request inspection',
+    ],
+  },
+
+  // Log & Data Processing
+  {
+    id: 'jq',
+    name: 'jq',
+    description: 'Lightweight command-line JSON processor for log analysis',
+    category: 'forensics',
+    pricing: 'free',
+    website: 'https://stedolan.github.io/jq',
+    features: [
+      'JSON parsing',
+      'Log filtering',
+      'Command-line processing',
+      'Structured data analysis',
+    ],
+  },
+
 ];
 
 export const getToolsByCategory = (categoryId: string): Tool[] => {
