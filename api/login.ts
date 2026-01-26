@@ -1,5 +1,10 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
 
+type UserConfig = {
+  username: string;
+  password: string;
+};
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -20,7 +25,25 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(400).json({ error: 'Username and password required' });
   }
 
-  // Server-side credential validation
+  // Prefer per-user config when provided
+  const usersJson = process.env.ADMIN_USERS_JSON;
+  if (usersJson) {
+    try {
+      const users: UserConfig[] = JSON.parse(usersJson);
+      const match = users.find((u) => u.username === username && u.password === password);
+
+      if (!match) {
+        return res.status(401).json({ error: 'Either username or password is wrong' });
+      }
+
+      return res.status(200).json({ success: true, secret: password, username });
+    } catch (err) {
+      console.error('Failed to parse ADMIN_USERS_JSON', err);
+      return res.status(500).json({ error: 'Server configuration error' });
+    }
+  }
+
+  // Fallback to shared secret + allowed users list
   const adminSecret = process.env.ADMIN_SECRET;
   const allowedUsers = (process.env.ADMIN_ALLOWED_USERS || '')
     .split(',')
@@ -31,20 +54,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(500).json({ error: 'Server not configured' });
   }
 
-  // Validate password
   const isPasswordValid = password === adminSecret;
-
-  // Validate username (if whitelist is set)
   const isUsernameValid = allowedUsers.length === 0 || allowedUsers.includes(username);
 
   if (!isPasswordValid || !isUsernameValid) {
     return res.status(401).json({ error: 'Either username or password is wrong' });
   }
 
-  // Return success with the secret to use for API calls
-  return res.status(200).json({
-    success: true,
-    secret: adminSecret,
-    username,
-  });
+  return res.status(200).json({ success: true, secret: adminSecret, username });
 }
