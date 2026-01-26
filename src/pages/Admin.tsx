@@ -29,7 +29,8 @@ const Admin = () => {
 
   const fetchSubmissions = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/submissions');
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const response = await fetch(`${apiUrl}/api/submissions`);
       const data = await response.json();
       setSubmissions(data);
     } catch (error) {
@@ -45,7 +46,8 @@ const Admin = () => {
 
   const handleApprove = async (id: string) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/approve/${id}`, {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const response = await fetch(`${apiUrl}/api/approve/${id}`, {
         method: 'POST',
       });
       const data = await response.json();
@@ -68,7 +70,8 @@ const Admin = () => {
 
   const handleReject = async (id: string) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/reject/${id}`, {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const response = await fetch(`${apiUrl}/api/reject/${id}`, {
         method: 'POST',
       });
 
