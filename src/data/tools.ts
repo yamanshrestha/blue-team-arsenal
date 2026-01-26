@@ -1,9 +1,7 @@
 import { Tool } from '@/types/tool';
 
 export const tools: Tool[] = [
-  // ======================
-  // SIEM Tools
-  // ======================
+   // SIEM Tools
   {
     id: 'splunk',
     name: 'Splunk',
@@ -13,12 +11,7 @@ export const tools: Tool[] = [
     category: 'siem',
     pricing: 'paid',
     website: 'https://www.splunk.com',
-    features: [
-      'Real-time monitoring',
-      'Custom dashboards',
-      'Machine learning',
-      'Threat intelligence integration',
-    ],
+    features: ['Real-time monitoring', 'Custom dashboards', 'Machine learning', 'Threat intelligence integration'],
   },
   {
     id: 'elastic-siem',
@@ -27,12 +20,7 @@ export const tools: Tool[] = [
     category: 'siem',
     pricing: 'freemium',
     website: 'https://www.elastic.co/security/siem',
-    features: [
-      'Free tier available',
-      'Scalable architecture',
-      'Built-in detection rules',
-      'MITRE ATT&CK mapping',
-    ],
+    features: ['Free tier available', 'Scalable architecture', 'Built-in detection rules', 'MITRE ATT&CK mapping'],
   },
   {
     id: 'wazuh',
@@ -41,12 +29,7 @@ export const tools: Tool[] = [
     category: 'siem',
     pricing: 'free',
     website: 'https://wazuh.com',
-    features: [
-      'Open source',
-      'File integrity monitoring',
-      'Vulnerability detection',
-      'Cloud security',
-    ],
+    features: ['Open source', 'File integrity monitoring', 'Vulnerability detection', 'Cloud security'],
   },
   {
     id: 'graylog',
@@ -55,12 +38,7 @@ export const tools: Tool[] = [
     category: 'siem',
     pricing: 'freemium',
     website: 'https://graylog.org',
-    features: [
-      'Centralized logging',
-      'Search and alerting',
-      'Custom dashboards',
-      'SIEM integrations',
-    ],
+    features: ['Centralized logging', 'Search and alerting', 'Custom dashboards', 'SIEM integrations'],
   },
   {
     id: 'qradar',
@@ -69,12 +47,7 @@ export const tools: Tool[] = [
     category: 'siem',
     pricing: 'paid',
     website: 'https://www.ibm.com/products/qradar-siem',
-    features: [
-      'AI-powered analytics',
-      'Network flow analysis',
-      'User behavior analytics',
-      'Automated response',
-    ],
+    features: ['AI-powered analytics', 'Network flow analysis', 'User behavior analytics', 'Automated response'],
   },
   {
     id: 'security-onion',
@@ -83,17 +56,10 @@ export const tools: Tool[] = [
     category: 'siem',
     pricing: 'free',
     website: 'https://securityonion.net',
-    features: [
-      'Zeek and Suricata',
-      'Elastic Stack',
-      'Full packet capture',
-      'SOC monitoring tools',
-    ],
+    features: ['Zeek and Suricata', 'Elastic Stack', 'Full packet capture', 'SOC monitoring tools'],
   },
 
-  // ======================
   // Phishing Analysis
-  // ======================
   {
     id: 'phishtool',
     name: 'PhishTool',
@@ -101,12 +67,7 @@ export const tools: Tool[] = [
     category: 'phishing-analysis',
     pricing: 'freemium',
     website: 'https://www.phishtool.com',
-    features: [
-      'Email header analysis',
-      'URL scanning',
-      'Attachment analysis',
-      'Threat indicators',
-    ],
+    features: ['Email header analysis', 'URL scanning', 'Attachment analysis', 'Threat indicators'],
   },
   {
     id: 'urlscan',
@@ -115,12 +76,7 @@ export const tools: Tool[] = [
     category: 'phishing-analysis',
     pricing: 'freemium',
     website: 'https://urlscan.io',
-    features: [
-      'Screenshot capture',
-      'DOM analysis',
-      'Network requests',
-      'API access',
-    ],
+    features: ['Screenshot capture', 'DOM analysis', 'Network requests', 'API access'],
   },
   {
     id: 'virustotal',
@@ -129,12 +85,7 @@ export const tools: Tool[] = [
     category: 'phishing-analysis',
     pricing: 'freemium',
     website: 'https://www.virustotal.com',
-    features: [
-      '70+ antivirus engines',
-      'URL scanning',
-      'File analysis',
-      'API integration',
-    ],
+    features: ['70+ antivirus engines', 'URL scanning', 'File analysis', 'API integration'],
   },
   {
     id: 'emailrep',
@@ -143,17 +94,10 @@ export const tools: Tool[] = [
     category: 'phishing-analysis',
     pricing: 'freemium',
     website: 'https://emailrep.io',
-    features: [
-      'Reputation scoring',
-      'Breach detection',
-      'Domain analysis',
-      'API access',
-    ],
+    features: ['Reputation scoring', 'Breach detection', 'Domain analysis', 'API access'],
   },
 
-  // ======================
   // Malware Analysis
-  // ======================
   {
     id: 'any-run',
     name: 'ANY.RUN',
@@ -161,12 +105,7 @@ export const tools: Tool[] = [
     category: 'malware-analysis',
     pricing: 'freemium',
     website: 'https://any.run',
-    features: [
-      'Interactive sandbox',
-      'Network traffic capture',
-      'Process monitoring',
-      'IOC extraction',
-    ],
+    features: ['Interactive sandbox', 'Network traffic capture', 'Process monitoring', 'IOC extraction'],
   },
   {
     id: 'hybrid-analysis',
@@ -175,12 +114,7 @@ export const tools: Tool[] = [
     category: 'malware-analysis',
     pricing: 'free',
     website: 'https://www.hybrid-analysis.com',
-    features: [
-      'Automated analysis',
-      'YARA rules',
-      'API access',
-      'Behavior reports',
-    ],
+    features: ['Automated analysis', 'YARA rules', 'API access', 'Behavior reports'],
   },
   {
     id: 'cuckoo',
@@ -189,12 +123,7 @@ export const tools: Tool[] = [
     category: 'malware-analysis',
     pricing: 'free',
     website: 'https://cuckoosandbox.org',
-    features: [
-      'Self-hosted',
-      'Customizable',
-      'API integration',
-      'Detailed reports',
-    ],
+    features: ['Self-hosted', 'Customizable', 'API integration', 'Detailed reports'],
   },
   {
     id: 'remnux',
@@ -203,12 +132,7 @@ export const tools: Tool[] = [
     category: 'malware-analysis',
     pricing: 'free',
     website: 'https://remnux.org',
-    features: [
-      'Pre-built tools',
-      'Static analysis',
-      'Dynamic analysis',
-      'Memory forensics',
-    ],
+    features: ['Pre-built tools', 'Static analysis', 'Dynamic analysis', 'Memory forensics'],
   },
   {
     id: 'yara',
@@ -217,17 +141,10 @@ export const tools: Tool[] = [
     category: 'malware-analysis',
     pricing: 'free',
     website: 'https://virustotal.github.io/yara/',
-    features: [
-      'Pattern matching',
-      'Malware classification',
-      'Threat hunting',
-      'DFIR integration',
-    ],
+    features: ['Pattern matching', 'Malware classification', 'Threat hunting', 'DFIR integration'],
   },
 
-  // ======================
   // Threat Intelligence
-  // ======================
   {
     id: 'misp',
     name: 'MISP',
@@ -235,12 +152,7 @@ export const tools: Tool[] = [
     category: 'threat-intelligence',
     pricing: 'free',
     website: 'https://www.misp-project.org',
-    features: [
-      'IOC sharing',
-      'Correlation',
-      'STIX/TAXII support',
-      'Community feeds',
-    ],
+    features: ['IOC sharing', 'Correlation', 'STIX/TAXII support', 'Community feeds'],
   },
   {
     id: 'opencti',
@@ -249,12 +161,7 @@ export const tools: Tool[] = [
     category: 'threat-intelligence',
     pricing: 'free',
     website: 'https://www.opencti.io',
-    features: [
-      'STIX2 native',
-      'Knowledge graph',
-      'Connector ecosystem',
-      'MITRE ATT&CK',
-    ],
+    features: ['STIX2 native', 'Knowledge graph', 'Connector ecosystem', 'MITRE ATT&CK'],
   },
   {
     id: 'alienvault-otx',
@@ -263,12 +170,7 @@ export const tools: Tool[] = [
     category: 'threat-intelligence',
     pricing: 'free',
     website: 'https://otx.alienvault.com',
-    features: [
-      'Community pulses',
-      'API access',
-      'Integration tools',
-      'Global data',
-    ],
+    features: ['Community pulses', 'API access', 'Integration tools', 'Global data'],
   },
   {
     id: 'threatfox',
@@ -277,12 +179,7 @@ export const tools: Tool[] = [
     category: 'threat-intelligence',
     pricing: 'free',
     website: 'https://threatfox.abuse.ch',
-    features: [
-      'IOC database',
-      'API access',
-      'Daily exports',
-      'Malware family tracking',
-    ],
+    features: ['IOC database', 'API access', 'Daily exports', 'Malware family tracking'],
   },
   {
     id: 'abuseipdb',
@@ -291,12 +188,7 @@ export const tools: Tool[] = [
     category: 'threat-intelligence',
     pricing: 'freemium',
     website: 'https://www.abuseipdb.com',
-    features: [
-      'IP reputation scoring',
-      'Abuse reports',
-      'API access',
-      'SOC enrichment',
-    ],
+    features: ['IP reputation scoring', 'Abuse reports', 'API access', 'SOC enrichment'],
   },
   {
     id: 'sigma',
@@ -305,17 +197,10 @@ export const tools: Tool[] = [
     category: 'threat-intelligence',
     pricing: 'free',
     website: 'https://sigmahq.io',
-    features: [
-      'Detection-as-code',
-      'SIEM-agnostic rules',
-      'Community-driven',
-      'MITRE ATT&CK aligned',
-    ],
+    features: ['Detection-as-code', 'SIEM-agnostic rules', 'Community-driven', 'MITRE ATT&CK aligned'],
   },
 
-  // ======================
   // Network Analysis
-  // ======================
   {
     id: 'wireshark',
     name: 'Wireshark',
@@ -323,12 +208,7 @@ export const tools: Tool[] = [
     category: 'network-analysis',
     pricing: 'free',
     website: 'https://www.wireshark.org',
-    features: [
-      'Deep packet inspection',
-      'Protocol decode',
-      'Filtering',
-      'Export options',
-    ],
+    features: ['Deep packet inspection', 'Protocol decode', 'Filtering', 'Export options'],
   },
   {
     id: 'zeek',
@@ -337,12 +217,7 @@ export const tools: Tool[] = [
     category: 'network-analysis',
     pricing: 'free',
     website: 'https://zeek.org',
-    features: [
-      'Connection logging',
-      'Protocol analysis',
-      'Scripting language',
-      'File extraction',
-    ],
+    features: ['Connection logging', 'Protocol analysis', 'Scripting language', 'File extraction'],
   },
   {
     id: 'suricata',
@@ -351,12 +226,7 @@ export const tools: Tool[] = [
     category: 'network-analysis',
     pricing: 'free',
     website: 'https://suricata.io',
-    features: [
-      'Multi-threaded',
-      'Protocol detection',
-      'File extraction',
-      'Lua scripting',
-    ],
+    features: ['Multi-threaded', 'Protocol detection', 'File extraction', 'Lua scripting'],
   },
   {
     id: 'arkime',
@@ -365,17 +235,10 @@ export const tools: Tool[] = [
     category: 'network-analysis',
     pricing: 'free',
     website: 'https://arkime.com',
-    features: [
-      'Full packet capture',
-      'Session indexing',
-      'Web-based analysis',
-      'Threat hunting',
-    ],
+    features: ['Full packet capture', 'Session indexing', 'Web-based analysis', 'Threat hunting'],
   },
 
-  // ======================
   // EDR
-  // ======================
   {
     id: 'velociraptor',
     name: 'Velociraptor',
@@ -383,12 +246,7 @@ export const tools: Tool[] = [
     category: 'edr',
     pricing: 'free',
     website: 'https://docs.velociraptor.app',
-    features: [
-      'Endpoint queries',
-      'Artifact collection',
-      'Hunting',
-      'VQL language',
-    ],
+    features: ['Endpoint queries', 'Artifact collection', 'Hunting', 'VQL language'],
   },
   {
     id: 'osquery',
@@ -397,12 +255,7 @@ export const tools: Tool[] = [
     category: 'edr',
     pricing: 'free',
     website: 'https://osquery.io',
-    features: [
-      'SQL interface',
-      'Cross-platform',
-      'Real-time queries',
-      'Fleet management',
-    ],
+    features: ['SQL interface', 'Cross-platform', 'Real-time queries', 'Fleet management'],
   },
   {
     id: 'sysmon',
@@ -411,17 +264,10 @@ export const tools: Tool[] = [
     category: 'edr',
     pricing: 'free',
     website: 'https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon',
-    features: [
-      'Detailed process logging',
-      'Network connection logging',
-      'Threat detection visibility',
-      'SIEM integration',
-    ],
+    features: ['Detailed process logging', 'Network connection logging', 'Threat detection visibility', 'SIEM integration'],
   },
 
-  // ======================
   // SOAR
-  // ======================
   {
     id: 'thehive',
     name: 'TheHive',
@@ -429,12 +275,7 @@ export const tools: Tool[] = [
     category: 'soar',
     pricing: 'free',
     website: 'https://thehive-project.org',
-    features: [
-      'Case management',
-      'Incident response workflows',
-      'Collaboration',
-      'SOC integrations',
-    ],
+    features: ['Case management', 'Incident response workflows', 'Collaboration', 'SOC integrations'],
   },
   {
     id: 'cortex',
@@ -443,12 +284,7 @@ export const tools: Tool[] = [
     category: 'soar',
     pricing: 'free',
     website: 'https://www.cortex-project.org',
-    features: [
-      'Automated IOC analysis',
-      'Threat intelligence enrichment',
-      'Analyzer plugins',
-      'TheHive integration',
-    ],
+    features: ['Automated IOC analysis', 'Threat intelligence enrichment', 'Analyzer plugins', 'TheHive integration'],
   },
   {
     id: 'shuffle',
@@ -457,17 +293,10 @@ export const tools: Tool[] = [
     category: 'soar',
     pricing: 'freemium',
     website: 'https://shuffler.io',
-    features: [
-      'SOAR workflows',
-      'Low-code automation',
-      'App integrations',
-      'Incident response automation',
-    ],
+    features: ['SOAR workflows', 'Low-code automation', 'App integrations', 'Incident response automation'],
   },
 
-  // ======================
   // Forensics
-  // ======================
   {
     id: 'autopsy',
     name: 'Autopsy',
@@ -475,12 +304,7 @@ export const tools: Tool[] = [
     category: 'forensics',
     pricing: 'free',
     website: 'https://www.autopsy.com',
-    features: [
-      'Disk analysis',
-      'Timeline analysis',
-      'Keyword search',
-      'Module ecosystem',
-    ],
+    features: ['Disk analysis', 'Timeline analysis', 'Keyword search', 'Module ecosystem'],
   },
   {
     id: 'volatility',
@@ -489,12 +313,7 @@ export const tools: Tool[] = [
     category: 'forensics',
     pricing: 'free',
     website: 'https://www.volatilityfoundation.org',
-    features: [
-      'Memory analysis',
-      'Malware detection',
-      'Process analysis',
-      'Plugin system',
-    ],
+    features: ['Memory analysis', 'Malware detection', 'Process analysis', 'Plugin system'],
   },
   {
     id: 'ftk-imager',
@@ -503,12 +322,7 @@ export const tools: Tool[] = [
     category: 'forensics',
     pricing: 'free',
     website: 'https://www.exterro.com/ftk-imager',
-    features: [
-      'Disk imaging',
-      'Evidence preview',
-      'Hash verification',
-      'Memory capture',
-    ],
+    features: ['Disk imaging', 'Evidence preview', 'Hash verification', 'Memory capture'],
   },
   {
     id: 'plaso',
@@ -517,12 +331,7 @@ export const tools: Tool[] = [
     category: 'forensics',
     pricing: 'free',
     website: 'https://plaso.readthedocs.io',
-    features: [
-      'Timeline creation',
-      'Multiple parsers',
-      'Output formats',
-      'Log2Timeline',
-    ],
+    features: ['Timeline creation', 'Multiple parsers', 'Output formats', 'Log2Timeline'],
   },
 ];
 

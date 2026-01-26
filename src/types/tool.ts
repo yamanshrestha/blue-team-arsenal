@@ -12,6 +12,7 @@ export interface Tool {
 
 export type Category = 
   | 'siem'
+  | 'soar'
   | 'phishing-analysis'
   | 'malware-analysis'
   | 'threat-intelligence'
