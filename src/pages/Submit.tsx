@@ -30,23 +30,47 @@ const Submit = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate submission (will be replaced with actual API call later)
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    try {
+      const response = await fetch('http://localhost:5000/api/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
 
-    toast({
-      title: 'Tool submitted!',
-      description: 'Thank you for your contribution. Your submission will be reviewed shortly.',
-    });
+      const data = await response.json();
 
-    setFormData({
-      name: '',
-      website: '',
-      category: '',
-      pricing: '',
-      description: '',
-      features: '',
-    });
-    setIsSubmitting(false);
+      if (response.ok) {
+        toast({
+          title: 'Tool submitted!',
+          description: data.message,
+        });
+
+        setFormData({
+          name: '',
+          website: '',
+          category: '',
+          pricing: '',
+          description: '',
+          features: '',
+        });
+      } else {
+        toast({
+          title: 'Submission failed',
+          description: data.error || 'Please try again',
+          variant: 'destructive',
+        });
+      }
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Failed to submit tool. Make sure the backend is running.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (

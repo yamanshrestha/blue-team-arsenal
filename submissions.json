@@ -1,0 +1,15 @@
+{
+  "submissions": [
+    {
+      "id": "sub_1",
+      "name": "Example Tool",
+      "website": "https://example.com",
+      "category": "siem",
+      "pricing": "free",
+      "description": "This is an example submission",
+      "features": "Feature 1, Feature 2",
+      "status": "pending",
+      "submittedAt": "2024-01-26T00:00:00Z"
+    }
+  ]
+}
