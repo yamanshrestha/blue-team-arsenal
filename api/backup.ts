@@ -15,6 +15,28 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
+  const adminSecret = process.env.ADMIN_SECRET;
+  const allowedUsers = (process.env.ADMIN_ALLOWED_USERS || '')
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean);
+  const providedSecret = (req.headers['x-admin-secret'] || req.headers['x-admin-token']) as string | undefined;
+  const providedUser = (req.headers['x-admin-user'] as string | undefined)?.trim();
+
+  if (!adminSecret) {
+    return res.status(500).json({ error: 'Server not configured' });
+  }
+
+  if (!providedSecret || providedSecret !== adminSecret) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
+  if (allowedUsers.length > 0) {
+    if (!providedUser || !allowedUsers.includes(providedUser)) {
+      return res.status(401).json({ error: 'Unauthorized user' });
+    }
+  }
+
   const GH_TOKEN = process.env.GH_TOKEN;
   if (!GH_TOKEN) {
     return res.status(500).json({ error: 'GitHub token not configured' });

@@ -56,6 +56,17 @@ const Admin = () => {
       return;
     }
 
+    // Validate password against VITE_ADMIN_PASSWORD if set
+    const expectedPassword = (import.meta as any).env?.VITE_ADMIN_PASSWORD || 'admin123';
+    if (password !== expectedPassword) {
+      toast({
+        title: 'Access Denied',
+        description: 'Invalid credentials',
+        variant: 'destructive',
+      });
+      return;
+    }
+
     localStorage.setItem('admin_auth', 'true');
     localStorage.setItem('admin_secret', password);
     localStorage.setItem('admin_user', adminUser);
@@ -183,28 +194,28 @@ const Admin = () => {
               <div className="flex items-center justify-center mb-4">
                 <Lock className="h-12 w-12 text-primary" />
               </div>
-              <CardTitle className="text-center">Admin Access</CardTitle>
+              <CardTitle className="text-center">Admin Portal</CardTitle>
               <CardDescription className="text-center">
-                Enter password to access the admin dashboard
+                Enter credentials to access the dashboard
               </CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleLogin} className="space-y-4">
                 <div className="space-y-2">
-                  <p className="text-sm font-medium">Admin username</p>
+                  <p className="text-sm font-medium">Username</p>
                   <Input
                     type="text"
-                    placeholder="e.g. yshrestha"
+                    placeholder="e.g. admin"
                     value={adminUser}
                     onChange={(e) => setAdminUser(e.target.value)}
                     required
                   />
                 </div>
                 <div className="space-y-2">
-                  <p className="text-sm font-medium">Admin password / secret</p>
+                  <p className="text-sm font-medium">Password</p>
                   <Input
                     type="password"
-                    placeholder="Your admin secret"
+                    placeholder="Enter password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required

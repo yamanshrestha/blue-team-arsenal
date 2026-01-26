@@ -83,13 +83,20 @@ Downloads all submissions as JSON backup
 # Scopes required: repo (full control)
 GH_TOKEN=ghp_xxxxxxxxxxxx
 
-# Optional: Custom admin password
+# Server-only secret to protect admin APIs (do NOT expose)
+ADMIN_SECRET=your-super-strong-secret
+
+# Optional: comma-separated allowed admin usernames
+ADMIN_ALLOWED_USERS=alice,bob
+
+# Optional: Admin UI password (can reuse ADMIN_SECRET)
 VITE_ADMIN_PASSWORD=your-secure-password-here
 ```
 
 ### Local Development (.env)
 ```env
 VITE_API_URL=http://localhost:5000
+ADMIN_SECRET=admin123
 VITE_ADMIN_PASSWORD=admin123
 ```
 
@@ -118,6 +125,8 @@ All submissions are stored as GitHub Issues:
 - Password stored in environment variable
 - Session persists in localStorage
 - Logout clears session and reloads page
+- Admin API endpoints require `x-admin-secret` header that matches `ADMIN_SECRET`
+- If `ADMIN_ALLOWED_USERS` is set, API requests must also include `x-admin-user` matching the allowed list
 
 ### GitHub Token
 - Required for all API operations
