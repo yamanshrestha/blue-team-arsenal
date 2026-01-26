@@ -9,7 +9,7 @@ export const Header = () => {
         
         <Link to="/" className="flex items-center gap-2 font-semibold">
           <img src="/favicon.ico" alt="Blue Team Arsenal" className="h-6 w-6" />
-          <span className="text-lg">Blue Team Arsenal</span>
+          <span className="text-lg"><span className="text-blue-600">Blue</span> Team Arsenal</span>
         </Link>
         <nav className="flex items-center gap-6">
           <Link 
