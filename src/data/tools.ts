@@ -633,6 +633,185 @@ export const tools: Tool[] = [
       'Structured data analysis',
     ],
   },
+    // ======================
+  // Phishing Analysis (NEW)
+  // ======================
+  {
+    id: 'google-messageheader',
+    name: 'Google Messageheader Analyzer',
+    description: 'Analyzes full email headers to identify delivery issues and authentication results',
+    category: 'phishing-analysis',
+    pricing: 'free',
+    website: 'https://toolbox.googleapps.com/apps/messageheader/',
+    features: [
+      'Email header parsing',
+      'SPF, DKIM, and DMARC results',
+      'Mail routing visualization',
+      'Phishing investigation support',
+    ],
+  },
+  {
+    id: 'azure-message-header-analyzer',
+    name: 'Message Header Analyzer (Azure)',
+    description: 'Online tool to analyze email message headers for phishing investigations',
+    category: 'phishing-analysis',
+    pricing: 'free',
+    website: 'https://mha.azurewebsites.net/',
+    features: [
+      'Email header decoding',
+      'Sender IP analysis',
+      'Authentication checks',
+      'Phishing detection support',
+    ],
+  },
+  {
+    id: 'mailheader-org',
+    name: 'Mailheader.org',
+    description: 'Simple online email header analysis tool',
+    category: 'phishing-analysis',
+    pricing: 'free',
+    website: 'https://mailheader.org/',
+    features: [
+      'Quick header analysis',
+      'Sender information extraction',
+      'Authentication result display',
+      'Lightweight investigation tool',
+    ],
+  },
+  {
+    id: 'url-extractor',
+    name: 'URL Extractor',
+    description: 'Extracts URLs from text, emails, or documents for analysis',
+    category: 'phishing-analysis',
+    pricing: 'free',
+    website: 'https://www.convertcsv.com/url-extractor.htm',
+    features: [
+      'Bulk URL extraction',
+      'Email and text parsing',
+      'Pre-analysis support',
+      'Lightweight web-based tool',
+    ],
+  },
+  {
+    id: 'mxtoolbox',
+    name: 'MXToolbox',
+    description: 'DNS, MX, blacklist, and email authentication diagnostic tool',
+    category: 'phishing-analysis',
+    pricing: 'freemium',
+    website: 'https://mxtoolbox.com',
+    features: [
+      'MX record lookup',
+      'SPF, DKIM, and DMARC checks',
+      'Blacklist monitoring',
+      'Email infrastructure diagnostics',
+    ],
+  },
+  {
+    id: 'dmarcian-domain-checker',
+    name: 'DMARCian Domain Checker',
+    description: 'Inspects DMARC, SPF, and DKIM records for misconfigurations',
+    category: 'phishing-analysis',
+    pricing: 'free',
+    website: 'https://dmarcian.com/domain-checker/',
+    features: [
+      'DMARC policy inspection',
+      'SPF and DKIM validation',
+      'Misconfiguration detection',
+      'Email security diagnostics',
+    ],
+  },
+  {
+    id: 'dmarcian-spf-survey',
+    name: 'DMARCian SPF Survey',
+    description: 'Analyzes and visualizes SPF record complexity and issues',
+    category: 'phishing-analysis',
+    pricing: 'free',
+    website: 'https://dmarcian.com/spf-survey/',
+    features: [
+      'SPF record visualization',
+      'DNS lookup analysis',
+      'SPF limit detection',
+      'Email authentication troubleshooting',
+    ],
+  },
+  {
+    id: 'eml-analyzer',
+    name: 'EML Analyzer',
+    description: 'Parses and analyzes .eml email files for phishing investigations',
+    category: 'phishing-analysis',
+    pricing: 'free',
+    website: 'https://github.com/ninoseki/eml_analyzer',
+    features: [
+      'EML file parsing',
+      'Header and body analysis',
+      'Attachment extraction',
+      'Phishing investigation support',
+    ],
+  },
+
+  // ======================
+  // Threat Intelligence (NEW)
+  // ======================
+  {
+    id: 'phishtank',
+    name: 'PhishTank',
+    description: 'Community-driven database of verified phishing URLs',
+    category: 'threat-intelligence',
+    pricing: 'free',
+    website: 'https://phishtank.com',
+    features: [
+      'Phishing URL database',
+      'Community validation',
+      'API access',
+      'Threat intelligence enrichment',
+    ],
+  },
+  {
+    id: 'spamhaus',
+    name: 'Spamhaus',
+    description: 'Threat intelligence provider focused on spam, phishing, and malware infrastructure',
+    category: 'threat-intelligence',
+    pricing: 'freemium',
+    website: 'https://www.spamhaus.org',
+    features: [
+      'IP and domain reputation',
+      'Spam and malware blocklists',
+      'Threat intelligence feeds',
+      'Email security support',
+    ],
+  },
+
+  // ======================
+  // Malware Analysis (NEW)
+  // ======================
+  {
+    id: 'joe-sandbox',
+    name: 'Joe Sandbox',
+    description: 'Advanced malware analysis sandbox for dynamic and static analysis',
+    category: 'malware-analysis',
+    pricing: 'freemium',
+    website: 'https://www.joesecurity.org',
+    features: [
+      'Dynamic malware analysis',
+      'Static analysis',
+      'Detailed behavior reports',
+      'Threat intelligence integration',
+    ],
+  },
+  {
+    id: 'cyberchef',
+    name: 'CyberChef',
+    description: 'Web-based data analysis and decoding tool by GCHQ',
+    category: 'malware-analysis',
+    pricing: 'free',
+    website: 'https://gchq.github.io/CyberChef/',
+    features: [
+      'Data decoding and encoding',
+      'Malware artifact analysis',
+      'Recipe-based workflows',
+      'SOC and DFIR utility',
+    ],
+  },
 
 ];
 
